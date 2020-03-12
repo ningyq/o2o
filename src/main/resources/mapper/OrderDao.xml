@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nzyjfw.o2o.dao.OrderDao">
+
+    <resultMap type="com.nzyjfw.o2o.entity.Order" id="OrderMap">
+        <result property="id" column="id" jdbcType="VARCHAR"/>
+        <result property="userId" column="user_id" jdbcType="INTEGER"/>
+        <result property="money" column="money" jdbcType="NUMERIC"/>
+        <result property="date" column="date" jdbcType="TIMESTAMP"/>
+        <result property="freight" column="freight" jdbcType="NUMERIC"/>
+        <result property="status" column="status" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <select id="all" resultMap="OrderMap">
+        SELECT
+            o.id,
+            o.user_id,
+            o.money,
+            o.date,
+            o.freight,
+            o.`status`
+        FROM
+            order_table AS o
+    </select>
+
+    <select id="findByOrderId" parameterType="string" resultMap="OrderMap">
+        SELECT
+            o.id,
+            o.user_id,
+            o.money,
+            o.date,
+            o.freight,
+            o.`status`
+        FROM
+            order_table AS o
+        WHERE
+            o.id = #{orderId}
+    </select>
+
+    <select id="findByUserId" parameterType="int" resultMap="OrderMap">
+        SELECT
+            o.id,
+            o.user_id,
+            o.money,
+            o.date,
+            o.freight,
+            o.`status`
+        FROM
+            order_table AS o
+        WHERE
+            o.user_id = #{userId}
+    </select>
+</mapper>

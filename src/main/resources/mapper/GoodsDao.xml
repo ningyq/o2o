@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nzyjfw.o2o.dao.GoodsDao">
+
+    <resultMap type="com.nzyjfw.o2o.entity.Goods" id="GoodsMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="shopsId" column="shops_id" jdbcType="INTEGER"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="photo" column="photo" jdbcType="VARCHAR"/>
+        <result property="stock" column="stock" jdbcType="INTEGER"/>
+        <result property="description" column="description" jdbcType="VARCHAR"/>
+        <result property="salesVolume" column="sales_volume" jdbcType="INTEGER"/>
+        <result property="unit" column="unit" jdbcType="VARCHAR"/>
+        <result property="price" column="price" jdbcType="NUMERIC"/>
+        <result property="classifyId" column="classify_id" jdbcType="INTEGER"/>
+
+        <association property="classify" javaType="com.nzyjfw.o2o.entity.Classify">
+            <result property="id" column="classify_id" jdbcType="INTEGER"/>
+            <result property="name" column="classify_name" jdbcType="VARCHAR"/>
+            <result property="description" column="classify_description" jdbcType="VARCHAR"/>
+        </association>
+
+        <association property="shop" javaType="com.nzyjfw.o2o.entity.Shops">
+            <result property="id" column="shop_id" jdbcType="INTEGER"/>
+            <result property="name" column="shop_name" jdbcType="VARCHAR"/>
+            <result property="freight" column="shop_freight" jdbcType="NUMERIC"/>
+            <result property="description" column="shop_description" jdbcType="VARCHAR"/>
+        </association>
+    </resultMap>
+
+    <select id="findAll" resultMap="GoodsMap">
+        SELECT
+            g.id,
+            g.shops_id,
+            g.`name`,
+            g.photo,
+            g.stock,
+            g.description,
+            g.sales_volume,
+            g.unit,
+            g.price,
+            g.classify_id,
+            c.id AS classify_id,
+            c.`name` AS classify_name,
+            c.description AS classify_description,
+            s.id AS shop_id,
+            s.`name` AS shop_name,
+            s.freight AS shop_freight,
+            s.description AS shop_description
+        FROM
+            goods AS g
+            INNER JOIN classify AS c ON g.classify_id = c.id
+            INNER JOIN shops AS s ON g.shops_id = s.id
+    </select>
+
+    <select id="findByName" parameterType="string" resultMap="GoodsMap">
+        SELECT
+            g.id,
+            g.shops_id,
+            g.`name`,
+            g.photo,
+            g.stock,
+            g.description,
+            g.sales_volume,
+            g.unit,
+            g.price,
+            g.classify_id,
+            c.id AS classify_id,
+            c.`name` AS classify_name,
+            c.description AS classify_description,
+            s.id AS shop_id,
+            s.`name` AS shop_name,
+            s.freight AS shop_freight,
+            s.description AS shop_description
+        FROM
+            goods AS g
+            INNER JOIN classify AS c ON g.classify_id = c.id
+            INNER JOIN shops AS s ON g.shops_id = s.id
+        WHERE
+            g.name like concat('%', #{name}, '%')
+    </select>
+
+    <select id="findByShopsId" parameterType="int" resultMap="GoodsMap">
+        SELECT
+            g.id,
+            g.shops_id,
+            g.`name`,
+            g.photo,
+            g.stock,
+            g.description,
+            g.sales_volume,
+            g.unit,
+            g.price,
+            g.classify_id,
+            c.id AS classify_id,
+            c.`name` AS classify_name,
+            c.description AS classify_description,
+            s.id AS shop_id,
+            s.`name` AS shop_name,
+            s.freight AS shop_freight,
+            s.description AS shop_description
+        FROM
+            goods AS g
+            INNER JOIN classify AS c ON g.classify_id = c.id
+            INNER JOIN shops AS s ON g.shops_id = s.id
+        WHERE
+            g.shops_id = #{shopId}
+    </select>
+
+    <select id="findById" parameterType="int" resultMap="GoodsMap">
+        SELECT
+            g.id,
+            g.shops_id,
+            g.`name`,
+            g.photo,
+            g.stock,
+            g.description,
+            g.sales_volume,
+            g.unit,
+            g.price,
+            g.classify_id,
+            c.id AS classify_id,
+            c.`name` AS classify_name,
+            c.description AS classify_description,
+            s.id AS shop_id,
+            s.`name` AS shop_name,
+            s.freight AS shop_freight,
+            s.description AS shop_description
+        FROM
+            goods AS g
+            INNER JOIN classify AS c ON g.classify_id = c.id
+            INNER JOIN shops AS s ON g.shops_id = s.id
+        WHERE
+            g.id = #{id}
+    </select>
+
+    <select id="findByClassify" parameterType="string" resultMap="GoodsMap">
+        SELECT
+            g.id,
+            g.shops_id,
+            g.`name`,
+            g.photo,
+            g.stock,
+            g.description,
+            g.sales_volume,
+            g.unit,
+            g.price,
+            g.classify_id,
+            c.id AS classify_id,
+            c.`name` AS classify_name,
+            c.description AS classify_description,
+            s.id AS shop_id,
+            s.`name` AS shop_name,
+            s.freight AS shop_freight,
+            s.description AS shop_description
+        FROM
+            goods AS g
+            INNER JOIN classify AS c ON g.classify_id = c.id
+            INNER JOIN shops AS s ON g.shops_id = s.id
+        WHERE
+            c.name = #{classifyName}
+    </select>
+
+    <select id="findByStock" resultMap="GoodsMap">
+        SELECT
+            g.id,
+            g.shops_id,
+            g.`name`,
+            g.photo,
+            g.stock,
+            g.description,
+            g.sales_volume,
+            g.unit,
+            g.price,
+            g.classify_id,
+            c.id AS classify_id,
+            c.`name` AS classify_name,
+            c.description AS classify_description,
+            s.id AS shop_id,
+            s.`name` AS shop_name,
+            s.freight AS shop_freight,
+            s.description AS shop_description
+        FROM
+            goods AS g
+            INNER JOIN classify AS c ON g.classify_id = c.id
+            INNER JOIN shops AS s ON g.shops_id = s.id
+        WHERE
+            g.stock > 0
+    </select>
+</mapper>
